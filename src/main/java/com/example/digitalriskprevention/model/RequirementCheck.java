@@ -1,6 +1,8 @@
 package com.example.digitalriskprevention.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.Date;
  * @Description: 需求验收
  * @Version: 1.0
  */
+@Data
+@TableName(value = "requirement_check")
 public class RequirementCheck implements Serializable {
     private static final long serialVersionUID = -4598451898211596584L;
     /**
