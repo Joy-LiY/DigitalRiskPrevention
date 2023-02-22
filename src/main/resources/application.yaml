@@ -5,7 +5,7 @@ spring:
   # THYMELEAF (ThymeleafAutoConfiguration)
   # 开启模板缓存（默认值： true ）
   thymeleaf:
-    cache: true
+    cache: false
     check-template: true # 检查模板是否存在，然后再呈现
     check-template-location: true # 检查模板位置是否正确（默认值 :true ）
     content-type: text/html #Content-Type 的值（默认值： text/html ）
