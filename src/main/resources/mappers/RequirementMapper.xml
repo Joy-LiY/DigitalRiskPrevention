@@ -1,0 +1,25 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.digitalriskprevention.mapper.RequirementMapper">
+<!--    <select id="hdfxList" resultType="com.wxmcc.callmode.entity.dto.HdfxDTO" parameterType="HdfxQO">-->
+<!--    select  DATE_FORMAT( t.call_date, '%Y-%m-%d') callDate,-->
+<!--    t.calling_no callingNo,-->
+<!--    t.called_no calledNo,-->
+<!--    t.call_forward_no  callForwardNo,-->
+<!--    t.call_count callCount,-->
+<!--    t.base_station_no baseStationNo,-->
+<!--    t.target_phone_no targetPhoneNo,-->
+<!--    t.caller_ratio callerRatio,-->
+<!--    t.dispersion-->
+<!--    from (select @recordId:= #{recordId} p) parm,v_call_record_date t-->
+<!--    <where>-->
+<!--        <if test="beginDate !='' or beginDate != null">-->
+<!--            and t.call_date &gt;= #{beginDate}-->
+<!--        </if>-->
+<!--        <if test="endDate !='' or endDate != null">-->
+<!--            and t.call_date &lt;= #{endDate}-->
+<!--        </if>-->
+<!--    </where>-->
+<!--    order by t.call_date asc-->
+<!--  </select>-->
+</mapper>

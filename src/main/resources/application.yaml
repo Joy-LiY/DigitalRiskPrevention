@@ -27,12 +27,28 @@ spring:
     resources:
       static-locations: classpath:/static/
 
-
-
-
+  servlet:
+    multipart:
+      max-request-size: 1000MB
 # 应用服务 WEB 访问端口
 server:
   port: 8099
   servlet:
     context-path: /DigitalRiskPrevention
 
+mybatis-plus:
+  type-aliases-package: com.example.digitalriskprevention.model
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#日志配置
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  level:
+    org.springframework.web: DEBUG
+    com.fileman: DEBUG
+    root: WARN
+  file:
+    path: @system.filePath@/log
