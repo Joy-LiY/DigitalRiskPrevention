@@ -16,7 +16,7 @@ public class FileUploadController {
 
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "fileupload";
     }
 
 }
