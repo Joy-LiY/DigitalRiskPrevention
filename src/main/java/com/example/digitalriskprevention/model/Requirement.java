@@ -41,7 +41,15 @@ public class Requirement implements Serializable {
      */
     private String title;
 
-    public Requirement(String id) {
+    /**
+     * 用于关联上传的文件信息
+     *
+     * @param id
+     */
+    private String fileId;
+
+    public Requirement(String id, String fileId) {
         this.id = id;
+        this.fileId = fileId;
     }
 }

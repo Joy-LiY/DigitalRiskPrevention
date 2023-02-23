@@ -42,6 +42,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
 
     /**
      * @param file
+     * @param fileInfo
      * @description: 上传需求Excel信息，导入数据库
      * @author: zhangwentao
      * @date: 2023/2/22 下午2:54
@@ -50,7 +51,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean importFile(@NotNull MultipartFile file) throws IOException {
+    public boolean importFile(@NotNull MultipartFile file, FileInfo fileInfo) throws IOException {
         // 定义需求基本信息
         List<Requirement> requirementList = new ArrayList<>();
         // 定义需求评审情况
@@ -62,7 +63,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         // 定义需求后评估
         List<RequirementEvaluate> requirementEvaluateList = new ArrayList<>();
 
-        ExcelUtil.readBySax(file.getInputStream(), 0, createRowHandler(requirementList, requirementReviewList, requirementDevList, requirementCheckList, requirementEvaluateList));
+        ExcelUtil.readBySax(file.getInputStream(), 0, createRowHandler(fileInfo.getId(), requirementList, requirementReviewList, requirementDevList, requirementCheckList, requirementEvaluateList));
         // 批量保存,对列表每1000条进行一次切片
         this.partitionSaveBatch(requirementList);
         requirementReviewService.partitionSaveBatch(requirementReviewList);
@@ -92,6 +93,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     /**
      * 对每行数据进行处理
      *
+     * @param fileId
      * @param requirementList
      * @param requirementReviewList
      * @param requirementDevList
@@ -99,7 +101,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
      * @param requirementEvaluateList
      * @return
      */
-    private RowHandler createRowHandler(List<Requirement> requirementList, List<RequirementReview> requirementReviewList, List<RequirementDev> requirementDevList, List<RequirementCheck> requirementCheckList, List<RequirementEvaluate> requirementEvaluateList) {
+    private RowHandler createRowHandler(String fileId, List<Requirement> requirementList, List<RequirementReview> requirementReviewList, List<RequirementDev> requirementDevList, List<RequirementCheck> requirementCheckList, List<RequirementEvaluate> requirementEvaluateList) {
         return new RowHandler() {
             @Override
             public void handle(int sheetIndex, long rowIndex, List<Object> rowlist) {
@@ -110,7 +112,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 }
                 // 主表主键
                 String mainId = IdUtil.getSnowflakeNextIdStr();
-                Requirement requirement = new Requirement(mainId);
+                Requirement requirement = new Requirement(mainId, fileId);
                 RequirementReview requirementReview = new RequirementReview(IdUtil.getSnowflakeNextIdStr(), mainId);
                 RequirementDev requirementDev = new RequirementDev(IdUtil.getSnowflakeNextIdStr(), mainId);
                 RequirementCheck requirementCheck = new RequirementCheck(IdUtil.getSnowflakeNextIdStr(), mainId);

@@ -1,6 +1,7 @@
 package com.example.digitalriskprevention.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.digitalriskprevention.model.FileInfo;
 import com.example.digitalriskprevention.model.Requirement;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ public interface RequirementService extends IService<Requirement> {
      * @param: [file]
      * @return: java.lang.String
      **/
-    boolean importFile(MultipartFile file) throws IOException;
+    boolean importFile(MultipartFile file, FileInfo fileInfo) throws IOException;
 
     /**
      * @description: 分组批量保存
