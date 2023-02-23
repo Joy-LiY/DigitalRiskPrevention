@@ -39,6 +39,11 @@ public class RequirementCheck implements Serializable {
     private Date checkTime;
 
     /**
+     * 验收时长
+     */
+    private Double checkDuration;
+
+    /**
      * 是否超时
      */
     private String isOvertime;
@@ -47,4 +52,10 @@ public class RequirementCheck implements Serializable {
      * 原因（超时及未验收）
      */
     private String reason;
+
+    public RequirementCheck(String checkId, String requirementId) {
+        this.checkId = checkId;
+        this.requirementId = requirementId;
+
+    }
 }

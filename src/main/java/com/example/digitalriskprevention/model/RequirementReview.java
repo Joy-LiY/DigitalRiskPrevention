@@ -86,4 +86,9 @@ public class RequirementReview implements Serializable {
      * 评审时长
      */
     private Double reviewDuration;
+
+    public RequirementReview(String reviewId, String requirementId) {
+        this.reviewId = reviewId;
+        this.requirementId = requirementId;
+    }
 }

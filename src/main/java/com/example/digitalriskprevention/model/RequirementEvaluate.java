@@ -3,6 +3,7 @@ package com.example.digitalriskprevention.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.jetbrains.annotations.Contract;
 
 /**
  * @Author: zhangwentao
@@ -51,4 +52,10 @@ public class RequirementEvaluate {
      * 使用较少的原因说明
      */
     private String reason;
+
+    @Contract(pure = true)
+    public RequirementEvaluate(String evaluateId, String requirementId) {
+        this.evaluateId = evaluateId;
+        this.requirementId = requirementId;
+    }
 }

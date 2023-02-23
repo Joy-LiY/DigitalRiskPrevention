@@ -57,4 +57,8 @@ public class RequirementDev implements Serializable {
      */
     private String reason;
 
+    public RequirementDev(String devId, String requirementId) {
+        this.devId = devId;
+        this.requirementId = requirementId;
+    }
 }

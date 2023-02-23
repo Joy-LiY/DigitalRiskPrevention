@@ -20,12 +20,20 @@ public class Requirement implements Serializable {
     @TableId
     private String id;
     /**
-     *    厂家
+     * 序号
+     */
+    private Integer order;
+    /**
+     * 厂家
      */
 
     private String factory;
     /**
-     *  需求编号
+     * 归属系统
+     */
+    private String homeSystem;
+    /**
+     * 需求编号
      */
     private String number;
     /**
@@ -33,4 +41,7 @@ public class Requirement implements Serializable {
      */
     private String title;
 
+    public Requirement(String id) {
+        this.id = id;
+    }
 }
