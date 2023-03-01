@@ -1,8 +1,10 @@
 package com.example.digitalriskprevention.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -46,7 +48,8 @@ public class RequirementReview implements Serializable {
     /**
      * 需求提出部门
      */
-     private String department;
+    @TableField(jdbcType = JdbcType.CLOB)
+    private String department;
     /**
      * 预计工作量（人天）
      */
@@ -59,7 +62,7 @@ public class RequirementReview implements Serializable {
     /**
      * 终审工作量（人天）
      */
-    private Double lastReviewWorkLoad;
+    private Double lastReviewWorkload;
 
     /**
      * 预估金额（元）

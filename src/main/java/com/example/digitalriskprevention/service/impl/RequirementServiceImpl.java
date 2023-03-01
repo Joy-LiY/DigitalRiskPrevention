@@ -1,7 +1,6 @@
 package com.example.digitalriskprevention.service.impl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.sax.handler.RowHandler;
@@ -105,7 +104,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         return new RowHandler() {
             @Override
             public void handle(int sheetIndex, long rowIndex, List<Object> rowlist) {
-                Console.log("[{}] [{}] {}", sheetIndex, rowIndex, rowlist);
+//                Console.log("[{}] [{}] {}", sheetIndex, rowIndex, rowlist);
                 // 模版的第一行和第二行是标题
                 if (rowIndex == 0 || rowIndex == 1) {
                     return;
@@ -268,7 +267,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                         requirementReview.setFirstReviewWorkload(Double.parseDouble(cellObject.toString()));
                         break;
                     case 12:
-                        requirementReview.setLastReviewWorkLoad(Double.parseDouble(cellObject.toString()));
+                        requirementReview.setLastReviewWorkload(Double.parseDouble(cellObject.toString()));
                         break;
                     case 13:
                         requirementReview.setPlanAmount(Double.parseDouble(cellObject.toString()));
@@ -304,7 +303,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 switch (index) {
                     // 基本信息
                     case 0:
-                        requirement.setOrder(Integer.parseInt(cellObject.toString()));
+                        requirement.setOrderNum(Integer.parseInt(cellObject.toString()));
                         break;
                     case 1:
                         requirement.setFactory(cellObject.toString());

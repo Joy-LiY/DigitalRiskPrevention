@@ -16,9 +16,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sbvue?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://221.131.104.165:3307/requirement_data?characterEncoding=utf-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
     username: root
-    password:
+    password: cmcc2023test
 
   mvc:
     static-path-pattern: /**

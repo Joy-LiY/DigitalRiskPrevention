@@ -22,7 +22,7 @@ public class Requirement implements Serializable {
     /**
      * 序号
      */
-    private Integer order;
+    private int orderNum;
     /**
      * 厂家
      */

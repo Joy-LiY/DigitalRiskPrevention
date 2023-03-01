@@ -93,9 +93,13 @@
                 , accept: 'file'
                 , url: ctxPath + 'requirement/file/import'
                 , done: function (res) {
-                    layer.msg('上传成功');
-                    layui.$('#uploadDemoView').removeClass('layui-hide').find('xlsx').attr('src', res.files.file);
-                    console.log(res)
+                    console.log(res);
+                    if (res) {
+                        layer.msg('数据导入成功！');
+                        layui.$('#uploadDemoView').removeClass('layui-hide').find('xlsx').attr('src', res.files.file);
+                    } else {
+                        layer.alert('数据导入失败，请检查数据模板！');
+                    }
                 }
             });
 
