@@ -53,7 +53,7 @@ public class FileInfoServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> i
         } else {
             fileInfo.setStatus(FAIL);
         }
-        fileInfo.setFileName(file.getName());
+        fileInfo.setFileName(file.getOriginalFilename());
         fileInfo.setSize(file.getSize());
         fileInfo.setUploadDate(new DateTime());
         fileInfo.setIp(CusAccessObjectUtil.getIpAddress(request));

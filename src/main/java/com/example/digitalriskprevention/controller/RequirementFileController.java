@@ -37,7 +37,7 @@ public class RequirementFileController {
         try {
             result = requirementService.importFile(file, fileInfo);
         } catch (Exception e) {
-            log.error("数据导入异常:{}", e.getMessage());
+            log.error("数据导入异常:{}", e);
             result = false;
         } finally {
             // 记录文件保存内容

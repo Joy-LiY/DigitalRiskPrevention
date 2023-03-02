@@ -33,7 +33,7 @@ public class FileInfo {
      */
     String ip;
     /**
-     * 文件大小
+     * 文件大小（字节）
      */
     long size;
 

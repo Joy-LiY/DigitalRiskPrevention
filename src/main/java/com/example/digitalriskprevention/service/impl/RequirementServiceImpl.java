@@ -11,6 +11,7 @@ import com.example.digitalriskprevention.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,7 +105,6 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         return new RowHandler() {
             @Override
             public void handle(int sheetIndex, long rowIndex, List<Object> rowlist) {
-//                Console.log("[{}] [{}] {}", sheetIndex, rowIndex, rowlist);
                 // 模版的第一行和第二行是标题
                 if (rowIndex == 0 || rowIndex == 1) {
                     return;
@@ -120,7 +120,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 // 遍历行数据,一共36列数据
                 for (int i = 0; i < 36; i++) {
                     Object cellObject = rowlist.get(i);
-                    if (cellObject == null) {
+                    if (cellObject == null || StringUtils.isBlank(cellObject.toString())) {
                         continue;
                     }
                     this.initRequirement(i, cellObject, requirement);
@@ -261,19 +261,39 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                         requirementReview.setDepartment(cellObject.toString());
                         break;
                     case 10:
-                        requirementReview.setPlanWorkload(Double.parseDouble(cellObject.toString()));
+                        try {
+                            requirementReview.setPlanWorkload(Double.parseDouble(cellObject.toString()));
+                        } catch (Exception e) {
+                            log.error("转换【预计工作量】异常：{},数据设置为null", e.getMessage());
+                        }
                         break;
                     case 11:
-                        requirementReview.setFirstReviewWorkload(Double.parseDouble(cellObject.toString()));
+                        try {
+                            requirementReview.setFirstReviewWorkload(Double.parseDouble(cellObject.toString()));
+                        } catch (Exception e) {
+                            log.error("转换【初审工作量】异常：{},数据设置为null", e.getMessage());
+                        }
                         break;
                     case 12:
-                        requirementReview.setLastReviewWorkload(Double.parseDouble(cellObject.toString()));
+                        try {
+                            requirementReview.setLastReviewWorkload(Double.parseDouble(cellObject.toString()));
+                        } catch (Exception e) {
+                            log.error("转换【终审工作量】异常：{},数据设置为null", e.getMessage());
+                        }
                         break;
                     case 13:
-                        requirementReview.setPlanAmount(Double.parseDouble(cellObject.toString()));
+                        try {
+                            requirementReview.setPlanAmount(Double.parseDouble(cellObject.toString()));
+                        } catch (Exception e) {
+                            log.error("转换【预估金额】异常：{},数据设置为null", e.getMessage());
+                        }
                         break;
                     case 14:
-                        requirementReview.setPrice(Double.parseDouble(cellObject.toString()));
+                        try {
+                            requirementReview.setPrice(Double.parseDouble(cellObject.toString()));
+                        } catch (Exception e) {
+                            log.error("转换【单价】异常：{},数据设置为null", e.getMessage());
+                        }
                         break;
                     case 15:
                         requirementReview.setReviewResult(cellObject.toString());

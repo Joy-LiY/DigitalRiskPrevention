@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>文件上传</title>
+    <title>数据导入</title>
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 </head>
 <body>
 <!--layui文件上传-->
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-    <legend><h4>请在此处上传文件</h4></legend>
+    <legend><h4>请在此处选择文件导入数据</h4></legend>
 </fieldset>
 
 <div class="layui-upload-drag" id="fileUpload">
     <i class="layui-icon"></i>
-    <p>点击上传，或将文件拖拽到此处</p>
-    <div class="layui-hide" id="uploadDemoView">
-        <hr>
-        <input src="" alt="上传成功后渲染" style="max-width: 196px">
+    <p>点击选择文件，或将文件拖拽到此处</p>
+    <div class="layui-hide upload" id="uploadDemoView" style="margin-top: 20px;">
+        <i class="layui-icon layui-icon-list" style="font-size: 30px;"></i>
+        <input src="" alt="上传成功后渲染">
     </div>
 </div>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend><h4>已上传文件信息</h4></legend>
+    <legend><h4>已导入的文件信息</h4></legend>
 </fieldset>
 <!--查询表单-->
 <form class="layui-form" action="">
@@ -63,6 +63,15 @@
     .layui-upload-drag {
         width: 95%;
     }
+
+    .upload input {
+        min-width: 600px;
+        color: #009688;
+        height: 36px;
+        text-align: center;
+        border: 0px;
+        font-size: larger;
+    }
 </style>
 <script type="text/html" id="barDemo">
     <a class="layui-btn  layui-btn-sm" lay-event="detail">查看</a>
@@ -78,6 +87,7 @@
         layui.use(['upload', 'element', 'layer', 'table', 'laydate', 'form'], function () {
             var $ = layui.jquery
                 , upload = layui.upload
+                , element = layui.element
                 , table = layui.table
                 , layer = layui.layer
                 , laydate = layui.laydate
@@ -88,18 +98,31 @@
                 elem: '#uploadDate'
             });
             //拖拽上传
+            var index = "";
             upload.render({
                 elem: '#fileUpload'
                 , accept: 'file'
+                , size: 10240 //限制文件大小，单位 KB
+                , exts: 'xls|xlsx' //只允许上Excel文件
                 , url: ctxPath + 'requirement/file/import'
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        var selector = layui.$('#uploadDemoView').removeClass('layui-hide').find('input');
+                        selector.attr('value', file.name);
+                        selector.attr('title', file.name);
+                    });
+                    layer.msg('数据导入中...');
+                    index = layer.load(1);
+                }
                 , done: function (res) {
                     console.log(res);
                     if (res) {
                         layer.msg('数据导入成功！');
-                        layui.$('#uploadDemoView').removeClass('layui-hide').find('xlsx').attr('src', res.files.file);
                     } else {
                         layer.alert('数据导入失败，请检查数据模板！');
                     }
+                    layer.close(index);
                 }
             });
 
