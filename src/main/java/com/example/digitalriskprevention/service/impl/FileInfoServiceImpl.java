@@ -1,9 +1,13 @@
 package com.example.digitalriskprevention.service.impl;
 
 import cn.hutool.core.date.DateTime;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.digitalriskprevention.mapper.FileInfoMapper;
 import com.example.digitalriskprevention.model.FileInfo;
+import com.example.digitalriskprevention.model.qo.FileInfoQO;
 import com.example.digitalriskprevention.service.FileInfoService;
 import com.example.digitalriskprevention.utils.CusAccessObjectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +29,15 @@ public class FileInfoServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> i
     /**
      * 成功
      */
-    private final static Integer SUCCESS = 1;
+    public static final Integer SUCCESS = 1;
     /**
      * 失败
      */
-    private final static Integer FAIL = 0;
+    public static final Integer FAIL = 0;
+    /**
+     * 部分成功
+     */
+    public static final Integer PART = 2;
 
     /**
      * @param fileInfo
@@ -59,5 +67,28 @@ public class FileInfoServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> i
         fileInfo.setIp(CusAccessObjectUtil.getIpAddress(request));
 
         this.save(fileInfo);
+    }
+
+    /**
+     * 文件信息分页查询
+     *
+     * @param
+     * @param fileInfoQO 分页查询对象
+     * @return
+     */
+    @Override
+    public IPage<FileInfo> getFileInfoPage(FileInfoQO fileInfoQO) {
+        Page<FileInfo> fileInfoPage = new Page(fileInfoQO.getCurrent(), fileInfoQO.getSize());
+
+        LambdaQueryWrapper<FileInfo> queryWrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotBlank(fileInfoQO.getFileName())) {
+            queryWrapper.like(FileInfo::getFileName, fileInfoQO.getFileName());
+        }
+        if (null != fileInfoQO.getBeginDate() && null != fileInfoQO.getEndDate()) {
+            queryWrapper.between(FileInfo::getUploadDate, fileInfoQO.getBeginDate(), fileInfoQO.getEndDate());
+        }
+        queryWrapper.orderByDesc(FileInfo::getUploadDate);
+        fileInfoPage = this.baseMapper.selectPage(fileInfoPage, queryWrapper);
+        return fileInfoPage;
     }
 }

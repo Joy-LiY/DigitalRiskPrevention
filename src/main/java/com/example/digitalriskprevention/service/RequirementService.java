@@ -17,9 +17,9 @@ public interface RequirementService extends IService<Requirement> {
      * @author: zhangwentao
      * @date: 2023/2/22 下午2:54
      * @param: [file]
-     * @return: java.lang.String
+     * @return: FileInfo
      **/
-    boolean importFile(MultipartFile file, FileInfo fileInfo) throws IOException;
+    FileInfo importFile(MultipartFile file, FileInfo fileInfo) throws IOException;
 
     /**
      * @description: 分组批量保存

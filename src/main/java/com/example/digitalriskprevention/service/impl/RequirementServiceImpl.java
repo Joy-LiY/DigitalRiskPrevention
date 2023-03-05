@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.sax.handler.RowHandler;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.digitalriskprevention.mapper.RequirementMapper;
 import com.example.digitalriskprevention.model.*;
@@ -39,6 +40,10 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     private RequirementCheckService requirementCheckService;
     @Resource
     private RequirementEvaluateService requirementEvaluateService;
+    @Resource
+    private RequirementMapper requirementMapper;
+    @Resource
+    private FileInfoService fileInfoService;
 
     /**
      * @param file
@@ -51,7 +56,9 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean importFile(@NotNull MultipartFile file, FileInfo fileInfo) throws IOException {
+    public FileInfo importFile(@NotNull MultipartFile file, FileInfo fileInfo) throws IOException {
+        // 记录导入数据错误信息
+        List<String> errorMsgList = new ArrayList<>();
         // 定义需求基本信息
         List<Requirement> requirementList = new ArrayList<>();
         // 定义需求评审情况
@@ -63,14 +70,31 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         // 定义需求后评估
         List<RequirementEvaluate> requirementEvaluateList = new ArrayList<>();
 
-        ExcelUtil.readBySax(file.getInputStream(), 0, createRowHandler(fileInfo.getId(), requirementList, requirementReviewList, requirementDevList, requirementCheckList, requirementEvaluateList));
-        // 批量保存,对列表每1000条进行一次切片
-        this.partitionSaveBatch(requirementList);
-        requirementReviewService.partitionSaveBatch(requirementReviewList);
-        requirementDevService.partitionSaveBatch(requirementDevList);
-        requirementCheckService.partitionSaveBatch(requirementCheckList);
-        requirementEvaluateService.partitionSaveBatch(requirementEvaluateList);
-        return true;
+        try {
+            ExcelUtil.readBySax(file.getInputStream(), 0, createRowHandler(fileInfo.getId(), requirementList, requirementReviewList, requirementDevList, requirementCheckList, requirementEvaluateList, errorMsgList));
+            // 批量保存,对列表每1000条进行一次切片
+            this.partitionSaveBatch(requirementList);
+            requirementReviewService.partitionSaveBatch(requirementReviewList);
+            requirementDevService.partitionSaveBatch(requirementDevList);
+            requirementCheckService.partitionSaveBatch(requirementCheckList);
+            requirementEvaluateService.partitionSaveBatch(requirementEvaluateList);
+
+            // 设置导入状态
+            if (CollectionUtils.isEmpty(errorMsgList)) {
+                fileInfo.setStatus(FileInfoServiceImpl.SUCCESS);
+            } else {
+                if (CollectionUtils.isEmpty(requirementList)) {
+                    fileInfo.setStatus(FileInfoServiceImpl.FAIL);
+                } else {
+                    fileInfo.setStatus(FileInfoServiceImpl.PART);
+                }
+            }
+        } catch (Exception e) {
+            // 异常设置导入失败
+            errorMsgList.add(e.getMessage());
+            fileInfo.setStatus(FileInfoServiceImpl.FAIL);
+        }
+        return fileInfo;
     }
 
     /**
@@ -99,9 +123,10 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
      * @param requirementDevList
      * @param requirementCheckList
      * @param requirementEvaluateList
+     * @param errorMsgList
      * @return
      */
-    private RowHandler createRowHandler(String fileId, List<Requirement> requirementList, List<RequirementReview> requirementReviewList, List<RequirementDev> requirementDevList, List<RequirementCheck> requirementCheckList, List<RequirementEvaluate> requirementEvaluateList) {
+    private RowHandler createRowHandler(String fileId, List<Requirement> requirementList, List<RequirementReview> requirementReviewList, List<RequirementDev> requirementDevList, List<RequirementCheck> requirementCheckList, List<RequirementEvaluate> requirementEvaluateList, List<String> errorMsgList) {
         return new RowHandler() {
             @Override
             public void handle(int sheetIndex, long rowIndex, List<Object> rowlist) {
@@ -109,6 +134,12 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 if (rowIndex == 0 || rowIndex == 1) {
                     return;
                 }
+                // 根据 【归属系统 +需求编号】确认数据的唯一性
+                if (this.existData(rowlist)) {
+                    errorMsgList.add("【数据已存在：】" + rowlist.toString());
+                    return;
+                }
+
                 // 主表主键
                 String mainId = IdUtil.getSnowflakeNextIdStr();
                 Requirement requirement = new Requirement(mainId, fileId);
@@ -136,6 +167,22 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 requirementCheckList.add(requirementCheck);
                 requirementEvaluateList.add(requirementEvaluate);
 
+            }
+
+            /**
+             * 根据 【归属系统 +需求编号】确认数据的唯一性
+             *
+             * @param rowlist
+             * @return
+             */
+            private boolean existData(List<Object> rowlist) {
+                LambdaQueryWrapper<Requirement> queryWrapper = new LambdaQueryWrapper<>();
+                queryWrapper.eq(Requirement::getHomeSystem, rowlist.get(2)).eq(Requirement::getNumber, rowlist.get(3));
+                List<Requirement> requirements = requirementMapper.selectList(queryWrapper);
+                if (CollectionUtils.isEmpty(requirements)) {
+                    return true;
+                }
+                return false;
             }
 
 

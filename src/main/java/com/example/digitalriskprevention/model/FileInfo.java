@@ -38,7 +38,7 @@ public class FileInfo {
     long size;
 
     /**
-     * 上传状态 1：成功 0：失败
+     * 上传状态 1：成功 0：失败 2:部分成功
      */
     Integer status;
 
