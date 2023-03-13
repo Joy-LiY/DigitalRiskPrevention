@@ -29,4 +29,13 @@ public interface RequirementService extends IService<Requirement> {
      * @return: void
      **/
     void partitionSaveBatch(List<Requirement> requirementList);
+
+    /**
+     * @description: 根据文件Id批量删除数据
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:59
+     * @param: [fileId]
+     * @return: boolean
+     **/
+    boolean removeByFileId(String fileId);
 }

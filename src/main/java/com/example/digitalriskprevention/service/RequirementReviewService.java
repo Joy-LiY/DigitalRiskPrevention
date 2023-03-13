@@ -15,4 +15,12 @@ public interface RequirementReviewService extends IService<RequirementReview> {
      **/
     void partitionSaveBatch(List<RequirementReview> requirementReviewList);
 
+    /**
+     * @description: 根据requirementIds删除数据
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:49
+     * @param: [requirementIds]
+     * @return: boolean
+     **/
+    boolean removeByRequirementIds(List<String> requirementIds);
 }

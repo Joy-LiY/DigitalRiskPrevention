@@ -14,4 +14,13 @@ public interface RequirementCheckService extends IService<RequirementCheck> {
      * @return: void
      **/
     void partitionSaveBatch(List<RequirementCheck> requirementCheckList);
+
+    /**
+     * @description: 根据外健批量删除
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:55
+     * @param: [requirementIds]
+     * @return: boolean
+     **/
+    boolean removeByRequirementIds(List<String> requirementIds);
 }

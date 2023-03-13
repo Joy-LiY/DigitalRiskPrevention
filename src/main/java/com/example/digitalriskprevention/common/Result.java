@@ -52,8 +52,8 @@ public class Result {
         return new Result(true, ResultCodeEnum.SUCCESS.getMessage(), ResultCodeEnum.SUCCESS.getCode(), System.currentTimeMillis(), null, null);
     }
 
-    public static Result ok(Object data, Integer total) {
-        return new Result(true, ResultCodeEnum.SUCCESS.getMessage(), ResultCodeEnum.SUCCESS.getCode(), System.currentTimeMillis(), data, total);
+    public static Result ok(Object data) {
+        return new Result(true, ResultCodeEnum.SUCCESS.getMessage(), ResultCodeEnum.SUCCESS.getCode(), System.currentTimeMillis(), data, null);
     }
 
     public static Result ok(List<?> data, Integer total) {

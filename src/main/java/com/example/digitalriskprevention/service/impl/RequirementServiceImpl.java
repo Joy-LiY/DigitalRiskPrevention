@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: zhangwentao
@@ -42,8 +43,6 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     private RequirementEvaluateService requirementEvaluateService;
     @Resource
     private RequirementMapper requirementMapper;
-    @Resource
-    private FileInfoService fileInfoService;
 
     /**
      * @param file
@@ -94,6 +93,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
             errorMsgList.add(e.getMessage());
             fileInfo.setStatus(FileInfoServiceImpl.FAIL);
         }
+        fileInfo.setDescription(errorMsgList.stream().map(String::valueOf).collect(Collectors.joining("<br/>")));
         return fileInfo;
     }
 
@@ -112,6 +112,24 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
 
         List<List<Requirement>> lists = ListUtils.partition(requirementList, DEFAULT_BATCH_SIZE);
         lists.forEach(this::saveBatch);
+    }
+
+    /**
+     * @param fileId
+     * @description: 根据文件Id批量删除数据
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:59
+     * @param: [fileId]
+     * @return: boolean
+     */
+    @Override
+    public boolean removeByFileId(String fileId) {
+        if (StringUtils.isBlank(fileId)) {
+            return false;
+        }
+        LambdaQueryWrapper<Requirement> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Requirement::getFileId, fileId);
+        return this.remove(queryWrapper);
     }
 
     /**
@@ -136,7 +154,8 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 }
                 // 根据 【归属系统 +需求编号】确认数据的唯一性
                 if (this.existData(rowlist)) {
-                    errorMsgList.add("【数据已存在：】" + rowlist.toString());
+                    // 拼接序号，归属系统，需求编号
+                    errorMsgList.add("数据已存在！【序号】" + rowlist.get(0) + ",【归属系统】" + rowlist.get(2) + ",【需求编号】" + rowlist.get(3));
                     return;
                 }
 
@@ -171,6 +190,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
 
             /**
              * 根据 【归属系统 +需求编号】确认数据的唯一性
+             * 存在返回true
              *
              * @param rowlist
              * @return
@@ -180,9 +200,9 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
                 queryWrapper.eq(Requirement::getHomeSystem, rowlist.get(2)).eq(Requirement::getNumber, rowlist.get(3));
                 List<Requirement> requirements = requirementMapper.selectList(queryWrapper);
                 if (CollectionUtils.isEmpty(requirements)) {
-                    return true;
+                    return false;
                 }
-                return false;
+                return true;
             }
 
 

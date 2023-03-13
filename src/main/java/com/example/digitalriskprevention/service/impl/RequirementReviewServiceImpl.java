@@ -1,5 +1,6 @@
 package com.example.digitalriskprevention.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.digitalriskprevention.mapper.RequirementReviewMapper;
 import com.example.digitalriskprevention.model.RequirementReview;
@@ -36,5 +37,23 @@ public class RequirementReviewServiceImpl extends ServiceImpl<RequirementReviewM
 
         List<List<RequirementReview>> lists = ListUtils.partition(requirementReviewList, DEFAULT_BATCH_SIZE);
         lists.forEach(this::saveBatch);
+    }
+
+    /**
+     * @param requirementIds
+     * @description: 根据requirementIds删除数据
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:49
+     * @param: [requirementIds]
+     * @return: boolean
+     */
+    @Override
+    public boolean removeByRequirementIds(List<String> requirementIds) {
+        if (CollectionUtils.isEmpty(requirementIds)) {
+            return false;
+        }
+        LambdaQueryWrapper<RequirementReview> reviewQueryWrapper = new LambdaQueryWrapper<>();
+        reviewQueryWrapper.in(RequirementReview::getRequirementId, requirementIds);
+        return this.remove(reviewQueryWrapper);
     }
 }

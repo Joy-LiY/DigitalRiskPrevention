@@ -14,4 +14,13 @@ public interface RequirementEvaluateService extends IService<RequirementEvaluate
      * @return: void
      **/
     void partitionSaveBatch(List<RequirementEvaluate> requirementEvaluateList);
+
+    /**
+     * @description: 根据外健批量删除
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:57
+     * @param: [requirementIds]
+     * @return: boolean
+     **/
+    boolean removeByRequirementIds(List<String> requirementIds);
 }

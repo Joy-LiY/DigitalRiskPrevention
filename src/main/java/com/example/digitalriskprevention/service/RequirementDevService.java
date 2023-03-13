@@ -14,4 +14,13 @@ public interface RequirementDevService extends IService<RequirementDev> {
      * @return: void
      **/
     void partitionSaveBatch(List<RequirementDev> requirementDevList);
+
+    /**
+     * @description: 根据requirementIDs删除开发信息
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:52
+     * @param: [requirementIds]
+     * @return: boolean
+     **/
+    boolean removeByRequirementIds(List<String> requirementIds);
 }
