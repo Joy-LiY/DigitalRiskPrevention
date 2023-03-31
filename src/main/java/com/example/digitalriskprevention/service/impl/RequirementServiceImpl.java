@@ -522,22 +522,23 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         title.add("product");title.add("相似度高");title.add("相似度中");title.add("相似度低");
         result.add(title);
         for(RequirementHighest re : requirementHighests) {
-            List<Object> fl = new ArrayList<>();
-            int simLow = 0,simMid = 0,simHigh = 0;
             QueryWrapper<RequirementHighest> queryWrapper1 = new QueryWrapper<>();
             queryWrapper.select("highest").eq("factory",re.getFactory());
-            List<RequirementHighest> list = requirementHighestMapper.selectList(queryWrapper);
+            List<RequirementHighest> list = requirementHighestMapper.selectList(queryWrapper1);
+            int simLow = 0,simMid = 0,simHigh = 0;
             for (RequirementHighest re1 : list) {
                 if (re1.getHighest() > 0.95) simHigh++;
                 else if (re1.getHighest() >0.9) {
                     simMid++;
                 }else simLow++;
             }
-            int total = requirementHighests.size();
+            List<Object> fl = new ArrayList<>();
+            int total = list.size();
+            int simHS = simHigh*100/total,simMS = simMid*100/total,simLS =simLow*100/total;
             fl.add(re.getFactory());
-            fl.add(simHigh/total);
-            fl.add(simMid/total);
-            fl.add(simLow/total);
+            fl.add(simHS);
+            fl.add(simMS);
+            fl.add(simLS);
             result.add(fl);
         }
         return result;

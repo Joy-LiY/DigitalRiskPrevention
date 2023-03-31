@@ -14,11 +14,10 @@ public class RequirementHighest {
     @TableId
     private int id;
 
-    private String requirementId;
 
-    private String dicVectors;
 
-    private String listSimilar;
+
+
 
     private Double highest;
 

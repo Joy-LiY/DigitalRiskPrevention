@@ -27,6 +27,9 @@ spring:
     resources:
       static-locations: classpath:/static/
 
+  main:
+    allow-circular-references: true
+
   servlet:
     multipart:
       max-request-size: 1000MB
