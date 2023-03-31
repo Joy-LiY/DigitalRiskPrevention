@@ -82,7 +82,7 @@
     }
 </style>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn  layui-btn-sm" lay-event="detail">查看</a>
+    <a class="layui-btn  layui-btn-sm" lay-event="detail">详细</a>
     <a class="layui-btn  layui-btn-sm layui-btn-danger" lay-event="del">删除</a>
 </script>
 <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
@@ -128,13 +128,18 @@
                 }
                 , done: function (res) {
                     console.log(res);
-                    if (res) {
-                        layer.msg('数据导入成功！');
-                        tableReload(null);
+                    if (res == 0) {
+                        layer.msg('数据导入失败，请在导入记录列表中查看失败信息！');
+                    } else if (res == 2) {
+                        layer.msg('部分数据导入成功，请在导入记录列表中查看失败信息！');
+                    } else if (res == 1) {
+                        layer.msg('导入成功');
                     } else {
-                        layer.alert('数据导入失败，请检查数据模板！');
+                        layer.alert('返回信息异常，请联系管理员！');
                     }
                     layer.close(index);
+
+                    tableReload(null);
                 }
             });
 
@@ -169,6 +174,9 @@
                             var status = d.status;
                             if (status == 1) {
                                 return '<span style="color: #098029;">成功</span>';
+                            }
+                            if (status == 2) {
+                                return '<span style="color: #efbe5a;">部分成功</span>';
                             } else {
                                 return '<span style="color: #ff5722;">失败</span>';
                             }
@@ -199,10 +207,19 @@
             table.on('tool(fileTable)', function (obj) {
                 var data = obj.data;
                 if (obj.event === 'detail') {
-                    layer.msg('ID：' + data.id + ' 的查看操作');
+                    let content = data.description;
+                    if (1 == data.status) {
+                        content = "全部导入成功！";
+                    }
+                    layer.open({
+                        type: 1,
+                        maxmin: true,
+                        area: ['860px', '500px'],
+                        content: "<div style='margin: 10px'>" + content + "</div>"
+                    });
                 } else if (obj.event === 'del') {
-                    layer.confirm('真的删除行么', function (index) {
-                        obj.del();
+                    layer.confirm('该操作将删除文件对应的所有数据，确定要删除嘛？', function (index) {
+                        delData(data.id);
                         layer.close(index);
                     });
                 }
@@ -214,11 +231,14 @@
                 return false;
             });
 
+            /**
+             * 表格数据重载
+             * @param param
+             */
             function tableReload(param) {
                 if (!param) {
                     param = {"fileName": "", "beginDate": "", "endDate": ""}
                 }
-                layer.msg("查询中，请等待...");
                 // 表格数据重载
                 table.reload('fileTable', {
                     where: param
@@ -226,6 +246,25 @@
                         curr: 1 //重新从第 1 页开始
                     }
                 }); //只重载数据
+            }
+
+            /**
+             * 数据删除
+             * @param id fileId
+             */
+            function delData(id) {
+                index = layer.load(1);
+                $.ajax({
+                    type: "DELETE",
+                    url: ctxPath + 'requirement/file/' + id,
+                    success: function (res) {
+                        if (res.data) {
+                            layer.msg("删除成功！");
+                            tableReload();
+                        }
+                    }
+                });
+                layer.close(index);
             }
         });
 </script>

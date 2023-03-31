@@ -19,7 +19,7 @@ public interface FileInfoService extends IService<FileInfo> {
      * @param: [file, result]
      * @return: void
      **/
-    void saveFileInfo(FileInfo fileInfo, MultipartFile file, boolean result, HttpServletRequest request);
+    void saveFileInfo(FileInfo fileInfo, MultipartFile file, HttpServletRequest request);
 
     /**
      * 分页查询信息
@@ -28,4 +28,13 @@ public interface FileInfoService extends IService<FileInfo> {
      * @return
      */
     IPage<FileInfo> getFileInfoPage(FileInfoQO fileInfoQO);
+
+    /**
+     * @description: 根据文件ID删除所有导入的数据
+     * @author: zhangwentao
+     * @date: 2023/3/13 下午2:10
+     * @param: [fileId]
+     * @return: boolean
+     **/
+    boolean delFileData(String fileId);
 }
