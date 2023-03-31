@@ -5,7 +5,11 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.sax.handler.RowHandler;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.digitalriskprevention.mapper.RequirementDevMapper;
+import com.example.digitalriskprevention.mapper.RequirementEvaluateMapper;
+import com.example.digitalriskprevention.mapper.RequirementHighestMapper;
 import com.example.digitalriskprevention.mapper.RequirementMapper;
 import com.example.digitalriskprevention.model.*;
 import com.example.digitalriskprevention.service.*;
@@ -21,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: zhangwentao
@@ -44,6 +50,12 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     private RequirementMapper requirementMapper;
     @Resource
     private FileInfoService fileInfoService;
+    @Resource
+    private RequirementDevMapper requirementDevMapper;
+    @Resource
+    private RequirementEvaluateMapper requirementEvaluateMapper;
+    @Resource
+    private RequirementHighestMapper requirementHighestMapper;
 
     /**
      * @param file
@@ -390,4 +402,152 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
             }
         };
     }
+
+
+    /**
+     * 按照厂商对数据进行分组
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> getAllRequirementList() {
+        QueryWrapper<Requirement> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("factory, count(*) as total").groupBy("factory");
+        List<Map<String,Object>> result = requirementMapper.selectMaps(queryWrapper);
+
+        return result;
+    }
+
+    /**
+     * 按照厂商开发上线及时率表
+     * @return
+     */
+    @Override
+    public Map<String,Double> getRequirementisOvertime() {
+
+        int total = 0;
+        Map<String,Double> iaOverTimeList = new HashMap<>();
+
+        Map<String,List<String>> factoryGroup = getFactoryGroups();
+        for (String factoryNames : factoryGroup.keySet()){
+            Double over = 0d ;
+            total = factoryGroup.get(factoryNames).size();
+            for (String ids : factoryGroup.get(factoryNames)) {
+                QueryWrapper<RequirementDev> queryWrapperDev = new QueryWrapper<>();
+                queryWrapperDev.select("plan_time, real_time, is_overtime").eq("requirement_id",ids);
+                List<Map<String,Object>> reDevList = requirementDevMapper.selectMaps(queryWrapperDev);
+
+                for (Map<String,Object> reDevList1 : reDevList) {
+                    if (reDevList1 != null && reDevList1.get("is_overtime") != null && reDevList1.get("is_overtime").equals("已超时"))
+                        over++;
+                }
+            }
+            iaOverTimeList.put(factoryNames,over/total*100);
+        }
+        return iaOverTimeList;
+    }
+
+    @Override
+    public List<List<Map<String,Object>>> getRequirementsRequestAmounts() {
+        Map<String,Double> requestAmountsList = new HashMap<>();
+
+        Map<String,List<String>> factoryGroup = getFactoryGroups();
+
+        for (String factoryNames : factoryGroup.keySet()){
+            int total = factoryGroup.get(factoryNames).size();
+            int amounts = 0;
+            for (String ids : factoryGroup.get(factoryNames)) {
+                QueryWrapper<RequirementEvaluate> queryWrapperDev = new QueryWrapper<>();
+                queryWrapperDev.select("api_request_amount").eq("requirement_id",ids);
+                List<Map<String,Object>> reDevList = requirementEvaluateMapper.selectMaps(queryWrapperDev);
+
+                for (Map<String,Object> reDevList1 : reDevList) {
+                    if (reDevList1 != null
+                            && reDevList1.get("api_request_amount") != null
+                            && !(reDevList1.get("api_request_amount").toString().equals("无")
+                            || reDevList1.get("api_request_amount").toString().contains("不涉及")
+                            || reDevList1.get("api_request_amount").toString().contains("月"))
+                            && Integer.parseInt(reDevList1.get("api_request_amount").toString().trim())> 200)
+                        amounts++;
+                }
+            }
+            requestAmountsList.put(factoryNames,(double)amounts/total*100);
+        }
+
+        List<List<Map<String,Object>>> datali = new ArrayList<>();
+        for(String data : requestAmountsList.keySet()) {
+            List<Map<String,Object>> lei = new ArrayList<>();
+            Map<String,Object> mapq = new HashMap<>();
+            mapq.put("name", data+"（>200）");
+            mapq.put("value", requestAmountsList.get(data));
+            lei.add(mapq);
+            Map<String,Object> mapq1 = new HashMap<>();
+            mapq1.put("name", data+"（<200）");
+            mapq1.put("value", 100-requestAmountsList.get(data));
+            lei.add(mapq1);
+            datali.add(lei);
+        }
+        return datali;
+    }
+
+    @Override
+    public List<List<Object>> getRequirementSimilar() {
+        QueryWrapper<RequirementHighest> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("factory").groupBy("factory");
+        List<RequirementHighest> requirementHighests = requirementHighestMapper.selectList(queryWrapper);
+
+
+        List<List<Object>>  result = new ArrayList<>();
+        List<Object> title = new ArrayList<>();
+        title.add("product");title.add("相似度高");title.add("相似度中");title.add("相似度低");
+        result.add(title);
+        for(RequirementHighest re : requirementHighests) {
+            List<Object> fl = new ArrayList<>();
+            int simLow = 0,simMid = 0,simHigh = 0;
+            QueryWrapper<RequirementHighest> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper.select("highest").eq("factory",re.getFactory());
+            List<RequirementHighest> list = requirementHighestMapper.selectList(queryWrapper);
+            for (RequirementHighest re1 : list) {
+                if (re1.getHighest() > 0.95) simHigh++;
+                else if (re1.getHighest() >0.9) {
+                    simMid++;
+                }else simLow++;
+            }
+            int total = requirementHighests.size();
+            fl.add(re.getFactory());
+            fl.add(simHigh/total);
+            fl.add(simMid/total);
+            fl.add(simLow/total);
+            result.add(fl);
+        }
+        return result;
+
+
+    }
+
+    /**
+     * 按照厂商分组获取每个需求id
+     * @return
+     */
+    private Map<String,List<String>> getFactoryGroups() {
+        Map<String,List<String>> factoryGroupList = new HashMap<>();
+
+        QueryWrapper<Requirement> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("factory, count(*) as total").groupBy("factory");
+        List<Map<String,Object>> result = requirementMapper.selectMaps(queryWrapper);
+
+        for (Map<String,Object> map1 : result) {
+            QueryWrapper<Requirement> queryWrapperRe = new QueryWrapper<>();
+            queryWrapperRe.select("id").eq("factory",map1.get("factory"));
+            List<Map<String,Object>> reList = requirementMapper.selectMaps(queryWrapperRe);
+
+            List<String> idList = new ArrayList<>();
+            for (Map<String,Object> re : reList) {
+                idList.add(String.valueOf(re.get("id")));
+            }
+            factoryGroupList.put(String.valueOf(map1.get("factory")),idList);
+        }
+        return factoryGroupList;
+    }
+
+
 }

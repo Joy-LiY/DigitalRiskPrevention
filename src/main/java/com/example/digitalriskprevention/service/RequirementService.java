@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author taozi
@@ -29,4 +30,22 @@ public interface RequirementService extends IService<Requirement> {
      * @return: void
      **/
     void partitionSaveBatch(List<Requirement> requirementList);
+
+    /**
+     * @description: 按照厂商进行需求划分
+     * @author: ljx
+     * @return
+     */
+    List<Map<String,Object>> getAllRequirementList();
+
+    /**
+     *  @description: 按照厂商需求超时率
+     *  @author: ljx
+     * @return
+     */
+    Map<String,Double> getRequirementisOvertime();
+
+    List<List<Map<String,Object>>> getRequirementsRequestAmounts();
+
+    List<List<Object>> getRequirementSimilar();
 }
