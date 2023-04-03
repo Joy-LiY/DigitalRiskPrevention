@@ -1,13 +1,8 @@
 package com.example.digitalriskprevention.controller;
 
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONArray;
 import com.example.digitalriskprevention.service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,9 +20,9 @@ public class DataAnalysisController {
     @Autowired
     RequirementService requirementService;
 
-    @RequestMapping("/index")
+    @RequestMapping("index")
     public String index() {
-        return "/index";
+        return "index";
     }
 
     /**
