@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>网管大屏</title>
+	<link rel="stylesheet" href="./css/main.css" >
+    <script th:src="@{/script/jQuery.min.js}"></script>
+    <script th:src="@{/script/echarts.min.js}"></script>
+	<script th:src="@{/script/china.js}"></script>
+	<script th:src="@{/script/echarts-wordcloud.min.js}"></script>
+</head>
+<body onresize="refreshPage()">
+<div id="gyroContain">
+    <--静态内容-->
+    <div id="bt">
+        <span>网管需求综合分析平台 </span>
+    </div>
+    <div class="left_context">
+        <span>需求评审情况</span>
+        <div id="bt1" class="left_pic">
+            <div id="bt1a" class="left_title">
+                <div class="left_tag"> 需求总数 </div>
+                <div class="left_tag"> 总工作量 </div>
+            </div>
+            <div id="bt1b" class="left_title">
+                <div class="left_tag"> 需求查重情况  </div>
+                <div class="left_tag">
+                    <span>人工二次查重结果(<10%)</span>
+                    <div id="triangle1"> 1<br>2<br>3  </div>
+                    <div id="bt1b1"> 最终确认 个需求重复  </div>
+                </div>
+            </div>
+            <div id="bt1c" class="left_title">
+                <div class="left_tag"> 需求工作量共计核减  </div>
+                <div class="left_tag"> 评审通过率  </div>
+                <div class="left_tag">
+                    <span>TOP核减结果  </span>
+                    <div id="triangle2"> 1<br>2<br>3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right_context">
+        <div id="bt2" class="right_pic">
+            <span>上线验收情况</span>
+            <div id="bt2a"> 开发上线及时率  </div>
+            <div id="bt2b"> 验收通过率  </div>
+            <div id="bt2c"> 未及时上线 </div>
+            <div id="bt2c1">  系统数量 需求数量  </div>
+            <div id="bt2d">  验收未通过  </div>
+            <div id="bt2d1">  系统数量 需求数量  </div>
+        </div>
+        <div id="bt3">
+            <span>后评估结果</span>
+            <div id="bt3a"> 后评估总体情况  </div>
+            <div id="bt3b"> 维度得分排名  </div>
+            <div id="bt3b1"> 前三  </div>
+            <div id="triangle3"> 1<br>2<br>3  </div>
+            <div id="triangle4"> 3<br>2<br>1  </div>
+            <div id="bt3b2"> 后三  </div>
+        </div>
+    </div>
+
+
+
+        <div id="talbechage"> 系统&nbsp&nbsp&nbsp&nbsp专业室  </div>
+        <div id="talbetitle"> 排名&nbsp&nbsp&nbsp&nbsp&nbsp名称&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp预算进度  </div>
+
+        <div id="gif"> <img th:src="@{/images/img1.gif}" width='250' height='250'/>  </div>
+
+    <div id="tim"></div>
+    <div id="l1">我是左1</div>
+    <div id="l2">
+        <div class="title">中高风险地区</div>
+        <div class="ts"></div>
+
+        <div id="risk_wrapper">
+            <div id="risk_wrapper_li1">
+                <ul>
+                </ul>
+            </div>
+            <div id="risk_wrapper_li2"></div>
+        </div>
+
+
+    </div>
+    <div id="c1">
+        <div class="num"><h1></h1></div>
+        <div class="num"><h1></h1></div>
+        <div class="num"><h1></h1></div>
+        <div class="num"><h1></h1></div>
+        <div class="txt"><h2>累计确诊</h2></div>
+        <div class="txt"><h2>剩余确诊</h2></div>
+        <div class="txt"><h2>累计治愈</h2></div>
+        <div class="txt"><h2>累计死亡</h2></div>
+    </div>
+    <div id="c2">我是中2</div>
+    <div id="r1">我是右1</div>
+    <div id="r2">我是右2</div>
+</div>
+</body>
+
+<script th:src="@{/script/ec_left1.js}"></script>
+<script th:src="@{/script/ec_left2.js}"></script>
+<script th:src="@{/script/ec_center.js}"></script>
+<script th:src="@{/script/ec_right1.js}"></script>
+<script th:src="@{/script/ec_right2.js}"></script>
+<!--<script th:src="@{/script/controller.js}"></script>-->
+
+</html>

@@ -1,0 +1,381 @@
+body {
+       /*margin:0px;*/
+	   /*width:1000px;*/
+	   /*height:500px;*/
+       background: url(../images/bd3.jpg) no-repeat;
+	   background-size: 100% 100%;
+       background-attachment:fixed;
+       }
+.container {
+	font-size: 0;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	/*border: 1px solid lightblue;*/
+}
+.context {
+	width: 33.1%;;
+	height: 100%;
+	/*border: 1px solid white;*/
+	float: left;
+}
+.all {
+	width: 100%;
+	height: 100%;
+}
+.tb_2 {
+	width: 100%;
+	height: 3%;
+}
+.tb_2_1 {
+	width: 100%;
+	height: 10%;
+}
+
+.tb_2>span ,.tb_2_1 {
+	font-size: 20px;
+	color: white;
+	display: block;
+	text-align: left;
+	font-family: SimHei;
+	text-align: center;
+	/*background-image: -webkit-linear-gradient(#FFFFFF,#DDDDDD,#778899);*/
+}
+	/*background-image: -webkit-linear-gradient(#FFFFFF,#DDDDDD,#778899);*/
+/*	background: url(../images/汉堡图标_hamburger-button.png) no-repeat*/
+/*}*/
+.bt_1 {
+	width: 100%;
+	color: white;
+	font-size: 40px;
+	font-family: SimHei;
+	background-image: -webkit-linear-gradient(#FFFFFF,#DDDDDD,#778899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+	font-weight: 900;
+}
+.bt_1>span {
+	display: block;
+	width: 30%;
+	margin-left: 36%;
+}
+.context_1 {
+	width: 100%;
+	height: 28%;
+}
+.context_2 {
+	width: 100%;
+	height: 50%;
+}
+.total, .check, .result  {
+	float: left;
+	width: 50%;
+	height: 90%
+}
+.total span,.work span, .result span, .check span{
+	height: 10%;
+	font-size: 15px;
+	color: white;
+	text-align: center;
+	display: block;
+}
+.work {
+	float: right;
+	width: 50%;
+	height: 100%
+}
+.pic_1 {
+	height: 90%;
+}
+.context_4_1_0 {
+	height: 20%;
+}
+.tg_3 {
+	float: left;
+	width: 50%;
+}
+.context_4_1_2>span {
+	color: yellow;
+}
+#bt1 {
+	position: relative;
+	top: 1px;
+	height: 20%;
+	width: 100%;
+}
+#bt2 {
+	position: absolute;
+	width: 15%;
+	height: 5%;
+	top: 11%;
+	left: 77%;
+	color: white;
+	font-size: 15px;
+	font-family: SimHei;
+	background-image: -webkit-linear-gradient(#FFFFFF,#DDDDDD,#778899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+	font-weight: 900;
+}
+#bt2c {
+	position: absolute;
+	width: 5%;
+	height: 3%;
+	top: 29%;
+	left: 71%;
+	color: yellow;
+	font-size: 15px;
+	font-family: SimHei;
+	font-weight: 600;
+}
+#bt2d {
+	position: absolute;
+	width: 5%;
+	height: 3%;
+	top: 29%;
+	left: 88.5%;
+	color: yellow;
+	font-size: 15px;
+	font-family: SimHei;
+	font-weight: 600;
+}
+
+#bt3 {
+	position: absolute;
+	width: 15%;
+	height: 5%;
+	top: 58%;
+	left: 78%;
+	color: white;
+	font-size: 30px;
+	font-family: SimHei;
+	background-image: -webkit-linear-gradient(#FFFFFF,#DDDDDD,#778899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+	font-weight: 900;
+}
+#triangle1{
+    position: absolute;
+	width: 2%;
+	height: 15%;
+	top: 43.8%;
+	left: 21.3%;
+	color: white;
+	font-size: 30px;
+	font-family: SimHei;
+	line-height: 130%;
+	font-weight: 900;
+}
+#triangle2{
+    position: absolute;
+	width: 2%;
+	height: 15%;
+	top: 81.5%;
+	left: 21.3%;
+	color: white;
+	font-size: 30px;
+	font-family: SimHei;
+	line-height: 130%;
+	font-weight: 900;
+}
+#triangle3{
+    position: absolute;
+	width: 2%;
+	height: 15%;
+	top: 67%;
+	left: 83.8%;
+	color: white;
+	font-size: 30px;
+	font-family: SimHei;
+	line-height: 130%;
+	font-weight: 900;
+}
+#triangle4{
+    position: absolute;
+	width: 2%;
+	height: 15%;
+	top: 83.4%;
+	left: 95.5%;
+	color: white;
+	font-size: 30px;
+	font-family: SimHei;
+	line-height: 130%;
+	font-weight: 900;
+}
+#talbetitle{
+    position: absolute;
+	width: 28%;
+	height: 5%;
+	top: 69%;
+	left: 35.5%;
+	color: white;
+	font-size: 28px;
+	font-family: SimHei;
+	line-height: 130%;
+}
+#talbechage
+{
+    position: absolute;
+	width: 28%;
+	height: 5%;
+	top: 62.7%;
+	left: 38.5%;
+	color: white;
+	font-size: 28px;
+	font-family: SimHei;
+	line-height: 130%;
+}
+#gif{
+    position: absolute;
+    width: 10%;
+	height: 10%;
+	top: 30.1%;
+	left: 42%;
+}
+
+
+#c1 {
+	position: absolute;
+	width: 0%;
+	height: 0%;
+	top: 0%;
+	left: 19%;
+	color: black;
+	background: #777777;
+}
+
+.num {
+	width: 25%;
+	float: left;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: gold;
+	font-size: 20px;
+	/*margin-top: 20px;*/
+}
+
+.txt {
+	width: 25%;
+	float: left;
+	font-family: "幼圆";
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.txt h2 {
+	margin: 0;
+}
+
+#c2 {
+	position: absolute;
+	width: 0%;
+	height: 0%;
+	top: 35%;
+	left: 30%;
+	background: #888888;
+}
+
+#l1 {
+	position: absolute;
+	width: 0%;
+	height: 0%;
+	top: 10%;
+	left: 0%;
+	background: #666666;
+}
+
+#l2 {
+	position: absolute;
+	width: 0%;
+	height: 0%;
+	top: 55%;
+	left: 0%;
+	background: #333;
+}
+.high_risk{
+	color: red;
+}
+.middle_risk{
+	color: yellow;
+}
+#risk_wrapper{
+	margin-top: 2.5%;
+	overflow: hidden;
+	height: 80%;
+	text-align: center;
+}
+#l2 .title{
+	color: white;
+	font-size: 18px;
+	font-weight: bold;
+	padding-left: 5px;
+}
+#l2 .ts{
+	color: white;
+	font-size: 14px;
+	text-align: right;
+}
+#l2 ul{
+	list-style: none;
+}
+#l2 li{
+	color: white;
+	text-align: justify;
+	font-size: 12px;
+
+}
+
+
+#r1 {
+	position: absolute;
+	width: 0%;
+	height: 0%;
+	top: 10%;
+	right: 0%;
+	background: #666666;
+}
+
+#r2 {
+	position: absolute;
+	width: 0%;
+	height: 0%;
+	top: 55%;
+	right: 0%;
+	background: #777;
+}
+
+/*
+此处是设置自动匹配横屏，以适应手机显示 容器使用下面定义的 id: gyroContain
+*/
+@media screen and (orientation: portrait) {
+    html{
+        width : 100vmin;
+        height : 100vmax;  /*高度比宽度大*/
+    }
+    body{
+        width : 100vmin;
+        height : 100vmax;
+    }
+    #gyroContain{
+        width : 100vmax;
+        height : 100vmin;
+        transform-origin: top left;
+        transform: rotate(90deg) translate(0,-100vmin);
+    }
+  }
+@media screen and (orientation: landscape) {
+    html{
+        width : 100vmax;
+        height : 100vmin;
+    }
+    body{
+        width : 100vmax;
+        height : 100vmin;
+    }
+    #gyroContain{
+        width : 100vmax;
+        height : 100vmin;
+    }
+}

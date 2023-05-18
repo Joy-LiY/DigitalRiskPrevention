@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>网管大屏</title>
+    <link rel="stylesheet" href="./css/main.css" >
+    <script th:src="@{/script/jQuery.min.js}"></script>
+    <script th:src="@{/script/echarts.min.js}"></script>
+    <script th:src="@{/script/china.js}"></script>
+    <script th:src="@{/script/echarts-wordcloud.min.js}"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var PATH = "/DigitalRiskPrevention"
+</script>
+<div class="container">
+    <div class="bt_1">
+        <span>网管需求综合分析平台 </span>
+    </div>
+    <div class="context" id="left">
+        <div class="tb_2">
+            <span>需求评审情况</span>
+        </div>
+        <div class="all">
+            <div class="context_1">
+                <div class="total">
+                    <span>需求总数</span>
+                    <div class="pic_1" id="factoryId"></div><!-- 需求总数柱状图 -->
+                </div>
+                <div class="work">
+                    <span>总工作量</span>
+                    <div class="pic_1"></div> <!-- 总工作量图表 -->
+                </div>
+            </div>
+            <div class="context_1">
+                <div class="total">
+                    <span>需求查重情况</span>
+                    <div class="pic_3"></div><!-- 需求查重情况图 -->
+                </div>
+                <div class="work">
+                    <span>人工二次查重结果(<10%)</span>
+                    <div id="triangle1"> 1<br>2<br>3  </div>
+                    <div id="bt1b1"> 最终确认 个需求重复  </div>
+                </div>
+            </div>
+            <div class="context_1">
+                <div class="total">
+                    <span>需求工作量共计核减</span>
+                    <div class="pic_4"></div><!-- 需求工作量共计核减图 -->
+                </div>
+                <div class="work">
+                    <span>评审通过率</span>
+                    <span>TOP核减结果  </span>
+                    <div id="triangle2"> 1<br>2<br>3</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="context" id="middle">
+        <div>
+
+        </div>
+        <div class="tag">
+            <div class="tag_1" id="xt">系统</div>
+            <div class="tag_1" id="zy">专业室</div>
+        </div>
+        <div>
+            <div class="tag_2">
+                <div class="tag_1">排名</div>
+                <div class="tag_1">名称</div>
+                <div class="tag_1">预算进度</div>
+            </div>
+            <div class="order">
+                <!-- 排名图表 -->
+            </div>
+        </div>
+    </div>
+    <div class="context" id="right">
+        <div class="context_2">
+            <span class="tb_2_1">上线验收情况</span>
+            <div class="check">
+                <span>开发上线及时率</span>
+                <div class="context_4_1_0">开发上线及时率图表</div>
+                <div class="context_4_1_1">
+                    <div class="context_4_1_2">
+                        <span>未及时上线</span>
+                        <div class="tg_3">
+                            <span>系统数量</span>
+                            <div>系统数量图表</div>
+                        </div>
+                        <div class="tg_3">
+                            <span>需求数量</span>
+                            <div>需求数量图表</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="check">
+                <span>验收通过率</span>
+                <div class="context_4_1_0">验收通过率图表</div>
+                <div class="context_4_1_1">
+                    <div class="context_4_1_2">
+                        <span>验收未通过</span>
+                        <div class="tg_3">
+                            <span>系统数量</span>
+                            <div>系统数量图表</div>
+                        </div>
+                        <div class="tg_3">
+                            <span>需求数量</span>
+                            <div>需求数量图表</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="context_2">
+            <span class="tb_2_1">后评估结果</span>
+            <div class="result">
+                <span>后评估总体情况</span>
+                <div class="result_1">后评估总体情况图表</div>
+            </div>
+            <div class="result">
+                <span >维度得分排名</span>
+                <div class="result_2">维度得分排名图表</div>
+                <div id="bt3b1"> 前三  </div>
+                <div id="triangle3"> 1<br>2<br>3  </div>
+                <div id="triangle4"> 3<br>2<br>1  </div>
+                <div id="bt3b2"> 后三  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/script/echarts.js}"></script>
+<script th:src="@{/script/dealdata.js}"></script>
+</body>
+</html>

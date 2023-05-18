@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    var PATH = "/DigitalRiskPrevention"
+</script>
+<div name="factoryNums">
+    <span> 需求总数柱状图</span>
+    <div id="factoryId" style="width: 1000px;height:400px;"></div>
+</div>
+<div name="factoryOvertime">
+    <span> 超时率图 （已超时需求总数/需求总数*100%）</span>
+    <div id="factoryOvertime" style="width: 1000px;height:400px;"></div>
+</div>
+<div name="factoryRequestAmounts">
+    <span> 日均调用超过200次占比</span>
+    <div id="factoryRequestAmounts" style="width: 1000px;height:1500px;"></div>
+</div>
+<div name="factoryRequirementSimilar">
+    <span> NLP需求相似度分析结果</span>
+    <div id="factoryRequirementSimilar" style="width: 1000px;height:400px;"></div>
+</div>
+<script th:src="@{/script/jQuery.min.js}"></script>
+<script th:src="@{/script/echarts.js}"></script>
+<script th:src="@{/script/dealdata.js}"></script>
+</body>
+</html>
