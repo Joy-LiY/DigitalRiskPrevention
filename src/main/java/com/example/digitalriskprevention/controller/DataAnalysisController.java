@@ -27,7 +27,7 @@ public class DataAnalysisController {
 
     @RequestMapping("index")
     public String index() {
-        return "/index";
+        return "/maint";
     }
 
     /**

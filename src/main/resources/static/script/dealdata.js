@@ -15,7 +15,10 @@ $.ajax({
             alert("厂商需求总数累计有误");
         }else {
             var factoryId = document.getElementById('factoryId');
-            var myChart = echarts.init(factoryId);
+            var myChart = echarts.init(factoryId,'roma',{
+                width: 300,
+                height: 200
+            });
 
             var xAxis = new Array(0);
             var series = new Array(0);
@@ -30,7 +33,9 @@ $.ajax({
                     data: xAxis
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    min: 0,
+                    max: 400
                 },
                 series: [
                     {
@@ -60,7 +65,10 @@ $.ajax({
             alert("厂商开开发上线及时率计算有误");
         }else {
             var factoryOvertime = document.getElementById('factoryOvertime');
-            var myChart = echarts.init(factoryOvertime);
+            var myChart = echarts.init(factoryOvertime,null,{
+                width: 300,
+                height: 200
+            });
 
             var xAxis = new Array(0);
             var series = new Array(0);
@@ -164,28 +172,43 @@ $.ajax({
             alert("接口日均调用计算有误");
         }else {
             var factoryRequirementSimilar = document.getElementById('factoryRequirementSimilar');
-            var myChart = echarts.init(factoryRequirementSimilar);
+            var myChart = echarts.init(factoryRequirementSimilar,null,{
+                width: 300,
+                height: 170
+            });
 
             option = {
-                legend: {},
-                tooltip: {},
-                dataset: {
-                    source: [
-                        ['product', '相似度高', '相似度中', '相似度低'],
-                        ['东信', 7, 10, 130],
-                        ['亚信', 0, 2, 58],
-                        ['鼎力', 0, 0, 25],
-                        ['浩鲸', 14, 9, 134],
-                        ['华为', 9, 11, 20],
-                        ['浪潮', 18, 16, 167],
-                        ['直真', 4, 2, 24]
-                    ]
+                tooltip: {
+                    trigger: 'item'
                 },
-                xAxis: { type: 'category' },
-                yAxis: {},
-                // Declare several bar series, each will be mapped
-                // to a column of dataset.source by default.
-                series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: '相似度高',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            { value: 7, name: '东信' },
+                            { value: 0, name: '亚信' },
+                            { value: 0, name: '鼎力' },
+                            { value: 14, name: '浩鲸' },
+                            { value: 9, name: '华为' },
+                            { value: 18, name: '浪潮' },
+                            { value: 4, name: '直真' }
+
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
             };
             option && myChart.setOption(option);
         }
@@ -196,8 +219,146 @@ $.ajax({
 })
 
 
+/**
+
+ const data1 = [{
+                name: "东信",
+                value: 7
+            },{
+                name: "亚信",
+                value: 0
+            },{
+                name: "鼎力",
+                value: 0
+            },{
+                name: "浩鲸",
+                value: 14
+            },{
+                name: "华为",
+                value: 9
+            },{
+                name: "浪潮",
+                value: 18
+            },{
+                name: "直真",
+                value: 4
+            }];
+ const data2 = [{
+                name: "东信",
+                value: 10
+            },{
+                name: "亚信",
+                value: 2
+            },{
+                name: "鼎力",
+                value: 0
+            },{
+                name: "浩鲸",
+                value: 9
+            },{
+                name: "华为",
+                value: 11
+            },{
+                name: "浪潮",
+                value: 16
+            },{
+                name: "直真",
+                value: 2
+            }];
+ const data3 = [{
+                name: "东信",
+                value: 130
+            },{
+                name: "亚信",
+                value: 58
+            },{
+                name: "鼎力",
+                value: 25
+            },{
+                name: "浩鲸",
+                value: 134
+            },{
+                name: "华为",
+                value: 20
+            },{
+                name: "浪潮",
+                value: 167
+            },{
+                name: "直真",
+                value: 24
+            }];
 
 
+ option = {
+                title: [
+                    {
+                        subtext: '相似度高',
+                        left: '16.67%',
+                        top: '5%',
+                        textAlign: 'center'
+                    },
+                    {
+                        subtext: '相似度中',
+                        left: '50%',
+                        top: '5%',
+                        textAlign: 'center'
+                    },
+                    {
+                        subtext: '相似度低',
+                        left: '83.33%',
+                        top: '5%',
+                        textAlign: 'center'
+                    }
+                ],
+                series: [
+                    {
+                        type: 'pie',
+                        radius: '10%',
+                        center: ['20%', '20%'],
+                        data: data1,
+                        label: {
+                            position: 'outer',
+                            alignTo: 'none',
+                            bleedMargin: 5
+                        },
+                        left: 0,
+                        right: '66.6667%',
+                        top: 0,
+                        bottom: 0
+                    },
+                    {
+                        type: 'pie',
+                        radius: '10%',
+                        center: ['20%', '20%'],
+                        data: data2,
+                        label: {
+                            position: 'outer',
+                            alignTo: 'labelLine',
+                            bleedMargin: 5
+                        },
+                        left: '33.3333%',
+                        right: '33.3333%',
+                        top: 0,
+                        bottom: 0
+                    },
+                    {
+                        type: 'pie',
+                        radius: '10%',
+                        center: ['20%', '20%'],
+                        data: data3,
+                        label: {
+                            position: 'outer',
+                            alignTo: 'edge',
+                            margin: 20
+                        },
+                        left: '66.6667%',
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                ]
+            };
+ */
 
 
 
