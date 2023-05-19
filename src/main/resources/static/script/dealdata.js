@@ -218,6 +218,53 @@ $.ajax({
     }
 })
 
+$.ajax({
+    type: "post",
+    url: PATH + "/getRequirementsReview",
+    contentType:"application/json;charset=utf-8",
+    success: function factory(data) {
+        if (data.length === 0) {
+            alert("接口日均调用计算有误");
+        }else {
+            var factoryRequirementSimilar = document.getElementById('DepartmentRequirementsReview');
+            var myChart = echarts.init(factoryRequirementSimilar,null,{
+                width: 300,
+                height: 170
+            });
+
+            option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: '相似度高',
+                        type: 'pie',
+                        radius: '50%',
+                        data: data,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            option && myChart.setOption(option);
+        }
+    },
+    error: function (data) {
+        alert("接口日均调用计算有误");
+    }
+})
+
+
 
 /**
 

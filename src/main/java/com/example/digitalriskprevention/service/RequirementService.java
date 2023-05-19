@@ -57,4 +57,6 @@ public interface RequirementService extends IService<Requirement> {
     List<List<Map<String,Object>>> getRequirementsRequestAmounts();
 
     List<List<Object>> getRequirementSimilar();
+
+    List<Map<String, Object>> getFactoryReview();
 }

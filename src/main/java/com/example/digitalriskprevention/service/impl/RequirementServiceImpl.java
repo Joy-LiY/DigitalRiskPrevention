@@ -7,10 +7,7 @@ import cn.hutool.poi.excel.sax.handler.RowHandler;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.digitalriskprevention.mapper.RequirementDevMapper;
-import com.example.digitalriskprevention.mapper.RequirementEvaluateMapper;
-import com.example.digitalriskprevention.mapper.RequirementHighestMapper;
-import com.example.digitalriskprevention.mapper.RequirementMapper;
+import com.example.digitalriskprevention.mapper.*;
 import com.example.digitalriskprevention.model.*;
 import com.example.digitalriskprevention.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +54,8 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     private RequirementEvaluateMapper requirementEvaluateMapper;
     @Resource
     private RequirementHighestMapper requirementHighestMapper;
+    @Resource
+    private RequirementReviewMapper requirementReviewMapper;
 
     /**
      * @param file
@@ -547,6 +546,21 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     }
 
     /**
+     * 需求工作量核减
+     * @return
+     */
+    public List<Map<String, Object>> getFactoryReview() {
+        List<Map<String, Object>> factoryReviewList = new ArrayList<>();
+
+        QueryWrapper<RequirementReview> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("department as name,count(first_review_workload) as value").groupBy("department");
+
+        factoryReviewList = requirementReviewMapper.selectMaps(queryWrapper);
+
+        return factoryReviewList;
+    }
+
+    /**
      * 按照厂商分组获取每个需求id
      * @return
      */
@@ -570,6 +584,8 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         }
         return factoryGroupList;
     }
+
+
 
 
 }

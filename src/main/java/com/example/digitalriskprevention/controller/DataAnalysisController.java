@@ -58,4 +58,14 @@ public class DataAnalysisController {
         return  requirementService.getRequirementSimilar();
     }
 
+    /**
+     * 求工作量核减
+     * @return
+     */
+    @RequestMapping("/getRequirementsReview")
+    @ResponseBody
+    public List<Map<String, Object>> getRequirementsReview() {
+        return requirementService.getFactoryReview();
+    }
+
 }
